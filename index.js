@@ -3,16 +3,16 @@ const Joi = require('joi');
 const config = require('config');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const genresRoute = require('./routes/genres')
-const defaultRoute
+const genres = require('./routes/genres');
+const home = require('./routes/home');
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded( { extended: true } ));
 app.use(express.static('public'));
 app.use(helmet()); // Security
-app.use('/api/genres', genresRoute);
-app.use('/', defaultRoute);
+app.use('/', home);
+app.use('/api/genres', genres);
 
 // TODO: create a if statement only load in development mode
 app.use(morgan('tiny')); // Logging
