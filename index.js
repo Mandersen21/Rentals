@@ -1,71 +1,68 @@
 const express = require('express');
 const Joi = require('joi');
-
 const app = express();
-
 
 app.use(express.json());
 
-const courses = [
-    { id: 1, name: 'Course1' },
-    { id: 2, name: 'Course2' },
-    { id: 3, name: 'Course3' }
+const genres = [
+    { id: 1, type: 'Action' },
+    { id: 2, type: 'Thriller' },
+    { id: 3, type: 'Horror' },
+    { id: 4, type: 'Comedy' },
 ];
 
 app.get('/', (req, res) => {
-    res.send('Hello world')
+    res.send('')
 });
 
-app.get('/api/courses', (req, res) => {
-    res.send(courses)
+app.get('/api/genres', (req, res) => {
+    res.send(genres)
 });
 
-app.get('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) return res.status(404).send('Course was not found')
-    res.send(course)
+app.get('/api/genres/:id', (req, res) => {
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    if (!genre) return res.status(404).send('Genre was not found')
+    res.send(genre)
 })
 
-app.post('/api/courses', (req, res) => {
-    const { error } = validateCourse(req.body); // getting result.error
+app.post('/api/genres', (req, res) => {
+    const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(result.error);
 
-    const course = {
-        id: courses.length + 1,
-        name: req.body.name
+    const genre = {
+        id: genres.length + 1,
+        type: req.body.type
     };
-    courses.push(course);
-    res.send(course);
+    genres.push(genre);
+    res.send(genre);
 });
 
-app.put('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) return res.status(404).send('Course with the given ID was not found');
+app.put('/api/genres/:id', (req, res) => {
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    if (!genre) return res.status(404).send('Genre with the given ID was not found');
 
-    // const result = validateCourse(req.body);
-    const { error } = validateCourse(req.body); // getting result.error
+    const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    course.name = req.body.name;
-    res.send(course);
+    genre.type = req.body.type;
+    res.send(genre);
 });
 
-app.delete('/api/courses/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) return res.status(404).send('Course with the given ID was not found');
+app.delete('/api/genres/:id', (req, res) => {
+    const genre = genres.find(c => c.id === parseInt(req.params.id));
+    if (!genre) return res.status(404).send('Genre with the given ID was not found');
 
     // Delete
-    const index = courses.indexOf(course);
-    courses.splice(index, 1)
-    res.send(course);
+    const index = genres.indexOf(genre);
+    genres.splice(index, 1)
+    res.send(genre);
 });
 
-function validateCourse(course) {
+function validateGenre(genre) {
     const schema = {
-        name: Joi.string().min(3).required()
+        type: Joi.string().min(3).required()
     };
-
-    return Joi.validate(course, schema);
+    return Joi.validate(genre, schema);
 }
 
 const port = process.env.PORT || 3000;
