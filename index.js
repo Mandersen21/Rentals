@@ -1,16 +1,18 @@
 const express = require('express');
-const Joi = require('joi');
 const config = require('config');
 const helmet = require('helmet');
 const morgan = require('morgan');
+
+// Routes
 const genres = require('./routes/genres');
 const home = require('./routes/home');
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded( { extended: true } ));
 app.use(express.static('public'));
-app.use(helmet()); // Security
+app.use(helmet());
 app.use('/', home);
 app.use('/api/genres', genres);
 
