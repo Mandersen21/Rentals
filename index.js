@@ -17,4 +17,6 @@ app.use('/', home);
 app.use('/api/genres', genres);
 
 const port = process.env.PORT || 3000;
+
 app.listen(port, () => console.log('Listeling on port ' + port))
+
